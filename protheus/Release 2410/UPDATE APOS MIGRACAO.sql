@@ -1,0 +1,79 @@
+/*
+Updates que foram necessários na atualização para a release 12.1.2210
+*/
+
+UPDATE SX3010
+SET X3_F3 = 'PA2'
+WHERE X3_CAMPO = 'C7_FORNECE'
+
+UPDATE SX3010
+SET X3_BROWSE = 'S'
+WHERE X3_CAMPO IN (
+'C7_DESCRI',
+'C7_PRECO',
+'C7_TOTAL',
+
+'E2_NOMFOR', 
+'E2_CODBAR '
+
+)
+
+
+UPDATE SX3010
+SET X3_RELACAO = 'GETSXENUM("SA1","A1_COD")                                                                                                       '
+WHERE X3_CAMPO = 'A1_COD    '
+
+UPDATE SX3010
+SET X3_RELACAO = '"01"'
+WHERE X3_CAMPO = 'A1_LOJA   '
+
+UPDATE SX3010
+SET X3_RELACAO = '"016"'
+WHERE X3_CAMPO = 'A1_MENSAGE'
+
+
+UPDATE SX3010
+SET X3_RELACAO = '"105"'
+WHERE X3_CAMPO = 'A1_PAIS'
+
+
+
+/*
+F3 CÓDIGO DO PRODUTO NO PEDIDO DE COMPRA DEVE SER PRODUTO X FORNECEDOR
+*/
+
+UPDATE SX3010
+SET X3_F3 = 'SA5PC '
+WHERE X3_CAMPO = 'C7_PRODUTO'
+
+UPDATE SX3070
+SET X3_F3 = 'SA5PC '
+WHERE X3_CAMPO = 'C7_PRODUTO'
+
+/*
+COMPARTILHAMENTO ENTRE SAL E DBL PRECISAM ESTAR IGUAIS
+SAL - Grupos de Aprovação           
+DBL - Entidades Contábeis X Grp Apr (VAZIA)
+*/
+
+UPDATE SX2010
+SET X2_MODO = 'C'
+WHERE X2_CHAVE = 'DBL'
+
+
+/*
+Nome do cliente no contas a receber deve ser browse = sim
+*/
+UPDATE SX3010
+SET X3_BROWSE = 'S'
+WHERE X3_CAMPO = 'E1_NOMCLI'
+
+UPDATE SX3070
+SET X3_BROWSE = 'S'
+WHERE X3_CAMPO = 'E1_NOMCLI'
+
+
+/*
+Criação do campo virtual E2_XRSFOR2
+POSICIONE('SA2',1,XFILIAL('SA2')+SE2->E2_FORNECE+SE2->E2_LOJA,'A2_NOME')        
+*/
